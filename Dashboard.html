@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="reports.css">
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <!-- Botón de menú -->
+    <div id="menuToggle">☰</div>
+
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <h2>Admin Menu</h2>
+        <a href="#" onclick="showView('dashboardView')">Inicio</a>
+        <a href="#" onclick="showView('usersView')">Usuarios</a>
+        <a href="#" onclick="showView('settingsView')">Configuraciones</a>
+        <a href="#" onclick="showView('reportsView')">Reportes</a>
+        <!-- Botón para cerrar sesión -->
+        <button class="btnCerrar" onclick="cerrar()">Cerrar Sesión</button>
+    </div>
+
+    <!-- Contenido principal Dashboard -->
+
+    <div class="content" id="content">
+        <div id="dashboardView" class="view active">
+            <div class="rectangle"></div>
+            <h1>Bienvenido al Dashboard de GameChecho</h1>
+
+            <!-- Tarjetas de Resumen -->
+            <div class="cards">
+                <div class="card">
+                    <h3>Estadísticas de Ventas</h3>
+                    <p>Visualiza estadísticas clave sobre las ventas mensuales, ingresos y productos populares.</p>
+                </div>
+                <div class="card">
+                    <h3>Usuarios Activos</h3>
+                    <p>Monitorea la actividad de los usuarios en tiempo real, incluyendo nuevos registros y retención.
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>Reportes Financieros</h3>
+                    <p>Genera y exporta reportes de ingresos y gastos mensuales para el análisis financiero.</p>
+                </div>
+            </div>
+
+            <!-- Sección de Gráficos -->
+            <div class="charts">
+                <div class="chart">
+                    <h3>Ventas Mensuales</h3>
+                    <canvas id="monthlySalesChart"></canvas> <!-- Gráfico de Ventas Mensuales -->
+                </div>
+                <div class="chart">
+                    <h3>Usuarios Activos por Mes</h3>
+                    <canvas id="activeUsersChart"></canvas> <!-- Gráfico de Usuarios Activos -->
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <!-- Añadir scripts para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Gráfico de Ventas Mensuales
+        const monthlySalesCtx = document.getElementById('monthlySalesChart').getContext('2d');
+        const monthlySalesChart = new Chart(monthlySalesCtx, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'],
+                datasets: [{
+                    label: 'Ventas Mensuales',
+                    data: [1200, 1300, 1450, 1600, 1500, 1700, 1800, 1900, 2100, 2200],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(rgba(255, 85, 0, 100))'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Gráfico de Usuarios Activos
+        const activeUsersCtx = document.getElementById('activeUsersChart').getContext('2d');
+        const activeUsersChart = new Chart(activeUsersCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'],
+                datasets: [{
+                    label: 'Usuarios Activos',
+                    data: [150, 200, 250, 300, 280, 320, 350, 370, 400, 420],
+                    backgroundColor: 'rgba(154, 162, 235, 0.5)',
+                    borderColor: 'rgba(154, 262, 235, 82)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+
+    <!-- contenido de lavista de usuarios -->
+     
+    <div id="usersView" class="view">
+        <div class="rectangle" style="transform: translate(20px, -100px);"></div>
+        <h1>Usuarios</h1>
+        <p>Administración de usuarios.</p>
+    </div>
+
+    <!-- vista de configuraciones -->
+    <div id="settingsView" class="view">
+        <div class="rectangle" style="transform: translate(20px, -100px);"></div>
+        <h1>Configuraciones</h1>
+        <p>Ajustes y configuración de la aplicación.</p>
+    </div>
+    <!-- vista de reportes -->
+    <div id="reportsView" class="view">
+        <div class="rectangle" style="transform: translate(20px, -100px);"></div>
+        <fieldset>
+        <div class="titleReports">
+            <h1>Reportes financiero</h1>
+            <p>Visualización de reportes.</p>
+            <button class="fas fa-print" id="downloadPdf" onclick="window.print()">
+                Descargar 
+            </button>
+        </div>
+        <!-- Sección de Tablas -->
+        <div class="tables">
+            <div class="table">
+                <h3>Productos Más Vendidos</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Ventas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Teclado Mecánico RGB</td>
+                            <td>Periféricos</td>
+                            <td>$80</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>Monitor 4K</td>
+                            <td>Monitores</td>
+                            <td>$300</td>
+                            <td>80</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table">
+                <h3>Historial de Transacciones</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Transacción</th>
+                            <th>Fecha</th>
+                            <th>Producto</th>
+                            <th>Total</th>
+                            <th>Cliente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#00123</td>
+                            <td>2024-10-01</td>
+                            <td>Teclado Mecánico RGB</td>
+                            <td>$80</td>
+                            <td>Juan Perez</td>
+                        </tr>
+                        <tr>
+                            <td>#00124</td>
+                            <td>2024-10-05</td>
+                            <td>Monitor 4K</td>
+                            <td>$300</td>
+                            <td>Maria Lopez</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </fieldset>
+        </div>
+    </div>
+    
+
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+
+        <script>
+            // Configuración de Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyAeKTKuLo700RGu_4rUa110wmy-3Sqpv-o",
+                authDomain: "gamechecho-ec379.firebaseapp.com",
+                projectId: "gamechecho-ec379",
+                storageBucket: "gamechecho-ec379.appspot.com",
+                messagingSenderId: "755121061651",
+                appId: "1:755121061651:web:79818c1327bfe412dfa4e6",
+                measurementId: "G-09E9XFQ7RW"
+            };
+            firebase.initializeApp(firebaseConfig);
+
+            // Función para cerrar sesión
+            function cerrar() {
+                firebase.auth().signOut()
+                    .then(function () {
+                        console.log('Sesión cerrada exitosamente.');
+                        // Redirigir al login después de cerrar sesión
+                        window.location.href = "Index.html";
+                    })
+                    .catch(function (error) {
+                        console.error('Error al cerrar sesión:', error);
+                    });
+            }
+
+            // Función para mostrar vistas
+            function showView(viewId) {
+                // Oculta todas las vistas
+                document.querySelectorAll('.view').forEach(view => {
+                    view.classList.remove('active');
+                });
+                // Muestra la vista seleccionada
+                document.getElementById(viewId).classList.add('active');
+            }
+
+            // Toggle de menú lateral
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+
+            menuToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('active');
+                content.classList.toggle('active');
+            });
+        </script>
+</body>
+
+</html>
